@@ -6,8 +6,10 @@ my $ROOT;
 BEGIN { 
   my (@dirs) = split "/", $0 ;
   pop(@dirs);
-  push(@dirs,split "/", readlink($0)) ;
-  pop(@dirs);
+  if (readlink($0)) {
+    push(@dirs,split "/", readlink($0)) ;
+    pop(@dirs);
+  }
   $ROOT = join( "/", @dirs);
 }
 use lib $ROOT;
@@ -15,12 +17,14 @@ use lib $ROOT;
 use Common;
 use Conf;
 
-my $IP = "";
+my $pIP = "";
 if (@ARGV > 0) {
-  $IP = shift(@ARGV);
-  $IP =~ s/host=//;
+  $pIP = shift(@ARGV);
+  $pIP =~ s/host=//i;
+  $IP = $pIP;
 } else {
-  die "Usage: $0 <host=HostDVR> [Query=val]\n";
+  # 0 arguments requred.  host optionally comes from Conf.pm
+  # die "Usage: $0 [Host=DvrIP] [Query=val] [RenderKey=val]\n";
 }
 
 my $params = "";

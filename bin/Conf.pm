@@ -5,7 +5,12 @@ use warnings;
 use parent 'Exporter'; # imports and subclasses Exporter
 
 our $IP = "tivo";	# || $ENV{TIVO_IP};
-our $MAK= "";	# || $ENV{TIVO_MAK};
+our $MAK= "" || $ENV{TIVO_MAK};
+if (defined $MAK && $MAK =~ /^([0-9]+)$/) {
+  $MAK =~ $1;
+} else {
+  die "Invalid MAK\nDefine \$TIVO_MAK or edit Conf.pm\n";
+}
 
 our $ROOT = $INC[0] . "/..";
 our $DOC_DIR = "$ROOT/docroot";
