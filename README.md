@@ -24,25 +24,15 @@
 * VLC Firefox Plugin
 
 #####Sketchy Clients:
+
 * gnome VLC plugin
 * gnome totem / videos
-
 
 ####Getting started:
 
 1. Edit 2 lines [ IP and MAK ] in bin/Conf.pm for your Tivo
 2. Start daemon: `bin/kistd`
 3. Contact server from web browser, on port 8080
-
-#####Note for CR/LF problems:
-
-`$ git config --global core.autocrlf input`
-
-`$ git config --global core.safecrlf false`
-
-or
-
-`dos2unix`
 
 #####Logos can be added to docroot/html/images/logos/ with the filenames:
 
@@ -68,10 +58,9 @@ or
     
     $ bin/dvr_html host=tivo Recurse=Yes
     < html classic index from default IP follows >
-
-
  
 ####ToDo:
+
 * multi DVR households
 * support PATH
 * render Details page
