@@ -32,8 +32,8 @@ Getting started:
 Note for CR/LF problems:
 	`$ git config --global core.autocrlf input`
 
-	$ git config --global core.safecrlf false
+	`$ git config --global core.safecrlf false`
 
 or
 
-	dos2unix
+	`dos2unix`
