@@ -14,7 +14,7 @@ our $param_classic	= "Recurse=Yes";
 our $param_group	= "Recurse=No";
 
 our %mime_type = (
-	".mpg" => "video/mpeg"
+	"mpg" => "video/mpeg",
 );
 
 
