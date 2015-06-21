@@ -42,7 +42,7 @@ or
 Logos can be added to docroot/html/images/logos/ with the filenames:
 
     1.png
-2.png
-3.png
-...
-999.png
+    2.png
+    3.png
+    ...
+    999.png
