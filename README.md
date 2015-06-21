@@ -25,7 +25,7 @@ Tested Clients:
 
 Getting started:
 
-1. Edit 2 lines [IP and MAK] in bin/Conf.pm for your Tivo
+1. Edit 2 lines [ IP and MAK ] in bin/Conf.pm for your Tivo
 2. Start daemon: cd bin ; ./kistd
 3. Contact server from web browser, on port 8080
 
@@ -34,6 +34,14 @@ Note for CR/LF problems:
 `$ git config --global core.autocrlf input`
 
 `$ git config --global core.safecrlf false`
+
 or
 
 `dos2unix`
+
+Logos can be added to docroot/html/images/logos/ with the filenames:
+    1.png
+2.png
+3.png
+...
+999.png
