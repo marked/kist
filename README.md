@@ -18,3 +18,8 @@ Tested Clients:
 * VLC on Linux  
 * VLC on Mac
 * VLC Firefox Plugin
+
+Getting started:
+1. Edit 3 lines in Conf.pm
+1. cd bin ; ./kistd
+1. Contact server from web browser, on port 8080
