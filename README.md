@@ -1,15 +1,15 @@
 # kist
 ##Keep-It-Simple-Tivo
 
-Custom HTTP proxy server for TivoToGo
+###Custom HTTP proxy server for TivoToGo
 
 Requires:
 
 * perl
 * tivodecode
-* curl: /usr/bin/curl
-* libxml2-utils: /usr/bin/xmllint
-* libsaxonb-java: /usr/bin/saxonb-xslt
+* curl
+* libxml2-utils: ( xmllint )
+* libsaxonb-java: ( saxonb-xslt )
 
 [ /usr/bin/ or /usr/local/bin/ ]
 
@@ -30,7 +30,7 @@ Getting started:
 3. Contact server from web browser, on port 8080
 
 Note for CR/LF problems:
-`$ git config --global core.autocrlf input`
-`$ git config --global core.safecrlf false`
+	`$ git config --global core.autocrlf input`
+	`$ git config --global core.safecrlf false`
 or
-`dos2unix`
+	`dos2unix`
