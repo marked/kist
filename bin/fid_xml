@@ -8,8 +8,6 @@ BEGIN {
   $ROOT = $1;
 }
 use lib $ROOT;
-#warn $ROOT;
-#warn "@INC";
 
 use Common;
 use Conf;
@@ -27,10 +25,8 @@ if (@ARGV == 1) {
   $IP = shift(@ARGV);
 }
 
-
 my $fetch_cmd = "curl -u tivo:$MAK -k --digest -b'sid=abc' 'https://$IP$detail_xml_path$fid'";
-my $post_cmd = "$BIN_DIR/filters/pretty";
+my $post_cmd = "$BIN_DIR/post_filters/pretty";
 
-#warn "$fetch_cmd  | $post_cmd";
 my $xml = `$fetch_cmd  | $post_cmd`;
 print $xml;

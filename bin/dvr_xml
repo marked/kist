@@ -43,6 +43,9 @@ if (! $xsl) {
     }
   }
 }
+for (my $a=0; $a < @ARGV; $a++) {
+  $ARGV[$a] = "'$ARGV[$a]'";
+}
 
 my $transform1_cmd = "xsltproc $XSL_DIR/$xsl.xsl - " . join(' ', @ARGV);
 my $transform2_cmd = "saxonb-xslt -xsl:$XSL_DIR/$xsl.xsl -s:- " . join(' ', @ARGV);

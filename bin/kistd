@@ -78,7 +78,7 @@ sub handleConnection {
 		system("killall curl");
 		system("rm $DOC_DIR/`cat $LOG_DIR/$2.txt`.$2");
 		system("echo $1 > $LOG_DIR/$2.txt");
-		system("$BIN_DIR/fid_$2.pl $IP $1 $url_query > $DOC_DIR/$1.$2  &");
+		system("$BIN_DIR/fid_$2 $IP $1 $url_query > $DOC_DIR/$1.$2  &");
 		sleep 1;
 	    }
 	    
