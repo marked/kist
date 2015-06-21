@@ -22,10 +22,10 @@
 * VLC on Linux  
 * VLC on Mac
 * VLC Firefox Plugin
-* Ubuntu Videos
 
 #####Sketchy Clients:
 * gnome VLC plugin
+* gnome totem / videos
 
 
 ####Getting started:
@@ -74,10 +74,12 @@ or
 ####ToDo:
 * multi DVR households
 * support PATH
-* render Details
+* render Details page
 * Channel logo grabber
-* WAN + Auth
+* WAN access + Auth
 * Enlarge cache
+* Verify sane inputs
+* Redesign HTML UI
 
 ####More R&D:
 
