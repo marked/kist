@@ -7,9 +7,10 @@ Requires:
 
 * perl
 * tivodecode
-* curl
-* xmllint
-* saxonb-xslt
+* curl: /usr/bin/curl
+* libxml2-utils: /usr/bin/xmllint
+* libsaxonb-java: /usr/bin/saxonb-xslt
+[ /usr/bin/ or /usr/local/bin/ ]
 
 Tested Server on:
 

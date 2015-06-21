@@ -6,7 +6,6 @@ use parent 'Exporter'; # imports and subclasses Exporter
 
 our $IP = "tivo";
 our $MAK= "";
-our $DN = "LivingRoom";
 
 our $ROOT = $INC[0] . "/..";
 our $DOC_DIR = "$ROOT/docroot";
