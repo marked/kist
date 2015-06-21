@@ -6,6 +6,8 @@ my $ROOT;
 BEGIN { 
   my (@dirs) = split "/", $0 ;
   pop(@dirs);
+  push(@dirs,split "/", readlink($0)) ;
+  pop(@dirs);
   $ROOT = join( "/", @dirs);
 }
 use lib $ROOT;
@@ -30,22 +32,25 @@ if ($params !~ 'Container=') {
 }
 
 my $xsl = "";
-if (0) {
-  $xsl = shift(@ARGV);
-  $xsl =~ tr/[a-z0-9]//cd;
+if (! $xsl) {
+  if ($0 =~ /[a-zA-Z_]+\.([a-zA-Z0-9]+)/) {
+    if ($1 !~ /xml/) {
+      $xsl = $1;
+    }
+  }
 }
 
-my $transform1_cmd = "xsltproc $DOC_DIR/$xsl/$xsl.xsl -";
-my $transform2_cmd = "saxonb-xslt -xsl:$DOC_DIR/$xsl/$xsl.xsl -s:-";
+my $transform1_cmd = "xsltproc $XSL_DIR/$xsl.xsl - " . join(' ', @ARGV);
+my $transform2_cmd = "saxonb-xslt -xsl:$XSL_DIR/$xsl.xsl -s:- " . join(' ', @ARGV);
 
 my $url = "https://$IP$np_xml_path$params";
 
 my $fetch_cmd = "curl -s -u \"tivo:$MAK\" -b'sid=abc' -k --digest ";
 my $post_cmd = '';
 
-foreach my $f (`ls $BIN_DIR/filters`) {
+foreach my $f (`ls $BIN_DIR/post_filters`) {
   chomp $f;
-  $post_cmd .= " | $BIN_DIR/filters/$f";
+  $post_cmd .= " | $BIN_DIR/post_filters/$f";
 }
 
 if ($xsl) {

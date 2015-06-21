@@ -1,2 +1,1 @@
-#!/bin/sh
-../bin/dvr_xml.pl $* | saxonb-xslt -xsl:../transforms/m3u.xsl -s:- $*
+../bin/dvr_xml

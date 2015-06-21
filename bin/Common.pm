@@ -13,7 +13,9 @@ our $vid_path		= "/download/filename.TiVo?Container=%2FNowPlaying&id=";
 our $param_classic	= "Recurse=Yes";
 our $param_group	= "Recurse=No";
 
-our %mime_type	;
+our %mime_type = (
+	".mpg" => "video/mpeg"
+);
 
 
 our @EXPORT = qw(

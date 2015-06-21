@@ -88,7 +88,7 @@ sub handleConnection {
 	    $response->code( 500 );
 	    if (-f "$root/$url") { # file
 		if ("$url" =~ /\.mpg$/) { # large file
-		    $response->header(Content_Type => "video/mpeg");
+		    $response->header(Content_Type => $mime_type{'.mpg'});
 		    
 		    my $file = new IO::File "< $root/$url";		
 		    my ($cur_size, $full_size);
