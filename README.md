@@ -30,7 +30,7 @@ Getting started:
 3. Contact server from web browser, on port 8080
 
 Note for CR/LF problems:
-$ git config --global core.autocrlf input
-$ git config --global core.safecrlf false
+`$ git config --global core.autocrlf input`
+`$ git config --global core.safecrlf false`
 or
-dos2unix
+`dos2unix`
