@@ -1,9 +1,9 @@
 # kist
-##Keep-It-Simple-Tivo
+##Keep-It-Simple-Tv
 
 ###Custom HTTP proxy server for TivoToGo
 
-Requires:
+####Requires:
 
 * perl
 * tivodecode
@@ -13,23 +13,28 @@ Requires:
 
 [ /usr/bin/ or /usr/local/bin/ ]
 
-Tested Server on:
+####Tested Server:
 
 *  Ubuntu
 
-Tested Clients:
+####Tested Clients:
 
 * VLC on Linux  
 * VLC on Mac
 * VLC Firefox Plugin
+* Ubuntu Videos
 
-Getting started:
+#####Sketchy Clients:
+* gnome VLC plugin
+
+
+####Getting started:
 
 1. Edit 2 lines [ IP and MAK ] in bin/Conf.pm for your Tivo
-2. Start daemon: cd bin ; ./kistd
+2. Start daemon: `bin/kistd`
 3. Contact server from web browser, on port 8080
 
-Note for CR/LF problems:
+#####Note for CR/LF problems:
 
 `$ git config --global core.autocrlf input`
 
@@ -39,10 +44,43 @@ or
 
 `dos2unix`
 
-Logos can be added to docroot/html/images/logos/ with the filenames:
+#####Logos can be added to docroot/html/images/logos/ with the filenames:
 
     1.png
     2.png
     3.png
     ...
     999.png
+    
+####CLI Usage:
+
+    $ bin/fid_mpg [host=192.168.1.100] 123456
+    < mpeg TS of fileID follows >
+
+    $ bin/fid_xml [host=tivo] 123456
+    < xml details of fileID follows >
+
+    $ bin/dvr_xml 
+    < xml index from default IP follows >
+
+    $ bin/dvr_html
+    < html index from default IP follows >
+    
+    $ bin/dvr_html host=tivo Recurse=Yes
+    < html classic index from default IP follows >
+
+
+ 
+####ToDo:
+* multi DVR households
+* support PATH
+* render Details
+* Channel logo grabber
+* WAN + Auth
+* Enlarge cache
+
+####More R&D:
+
+* Debug VLC's file length detection
+* Attempt transcoding
+* Attempt Tivo side scrub
