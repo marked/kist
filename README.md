@@ -11,7 +11,6 @@ Requires:
 * saxonb-xslt
 
 Tested Server on:
-
 *  Ubuntu
   
 Tested Clients:
@@ -21,5 +20,5 @@ Tested Clients:
 
 Getting started:
 1. Edit 3 lines in Conf.pm
-1. cd bin ; ./kistd
-1. Contact server from web browser, on port 8080
+2. cd bin ; ./kistd
+3. Contact server from web browser, on port 8080
