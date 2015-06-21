@@ -73,9 +73,8 @@ sub handleConnection {
 		} else {
 		    $url_query = "";
 		}
-		$url_query += 0;
 		
-		warn "kill rm\n";
+		warn "kill+rm\n";
 		system("killall curl");
 		system("rm $DOC_DIR/`cat $LOG_DIR/$2.txt`.$2");
 		system("echo $1 > $LOG_DIR/$2.txt");
