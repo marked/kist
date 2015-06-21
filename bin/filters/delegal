@@ -1,0 +1,1 @@
+sed -e's%Copyright Tribune Media Services, Inc.%%g'

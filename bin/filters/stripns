@@ -1,0 +1,1 @@
+sed -e's% xmlns="http://www.tivo.com/developer/calypso-protocol-1.6/"%%g'

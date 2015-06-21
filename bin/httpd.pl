@@ -1,0 +1,186 @@
+#!/usr/bin/perl -wT
+use strict;
+use IO::File;
+use Cwd;
+use HTTP::Daemon;
+use HTTP::Status;
+use Data::Dumper;
+
+my $SROOT;
+BEGIN {
+  $0 =~ m%^(.*)/%;
+  $SROOT = $1;
+}
+use lib $SROOT;
+
+use Common;
+use Conf;
+
+my ($sip,$sport) = ('0.0.0.0', 8080);
+
+$| = 1;
+
+# We are quite explicit about where we listen
+my $d = new HTTP::Daemon
+    Reuse => 1,
+    LocalAddr => $sip,
+    LocalPort => $sport;
+defined $d || die "Unable to bind: $sip:$sport\n";
+
+my $nofork = $^O =~ /Win32/i; # For easy testing under Win32
+
+$SIG{__WARN__} = sub { warn __stamp(shift) };
+$SIG{__DIE__} = sub { die __stamp(shift) };
+$SIG{CHLD} = 'IGNORE';
+
+warn "Please contact me at: <URL:" . $d->url . ">\n";
+
+$ENV{PATH} = '/bin:/usr/bin:/usr/local/bin'; # Set our path to something secure
+my $root = $DOC_DIR;
+#$root = $1 if $root =~ /^(.*)$/; # untaint document root
+#$root .= "/" unless $root =~ m!/$!;
+
+# This sub Copyright (c) 1996,97,98,99,2000,01 by Randal L. Schwartz
+sub __stamp {
+    my ($message) = @_;
+    my $stamp = sprintf "[$$] [%02d@%02d:%02d:%02d] ", (localtime)[3,2,1,0];
+    $message =~ s/^/$stamp/gm;
+    $message;
+}
+
+sub handleConnection {
+    local $SIG{PIPE} = 'IGNORE';
+    my ($connection) = @_;
+    while (my $r = $connection->get_request()) {
+	warn "--------------------------------------------------------";
+	warn $r->as_string; # Yes, that's verbose.
+	
+	my ($url,$url_query) = ($r->url->path, $r->url->query);
+	$url = "/$url" unless $url =~ m!^/!; # Remove all suspicious paths
+	$url =~ s!/.?.(?=/|$)!/!g;
+	$url =~ tr!\x00-\x1F!!d;
+       	
+	my $response = new HTTP::Response( 404,undef,undef,"404 - Not found." );
+
+	if (!(-e "$root/$url") && $url =~ /([0-9\-\.]+)\.([a-z]+)/) { # missing jit file
+	    $response->code( 500 );
+	    if ($2 eq "png") {
+		system("ln -s Blank.png $DOC_DIR/html/images/logos/$1.$2");
+	    } else {
+		system("touch $DOC_DIR/$1.$2");
+		if (defined $url_query) {
+		    $url_query =~ tr/[0-9]//cd;
+		} else {
+		    $url_query = "";
+		}
+		$url_query += 0;
+		
+		warn "kill rm\n";
+		system("killall curl");
+		system("rm $DOC_DIR/`cat $LOG_DIR/$2.txt`.$2");
+		system("echo $1 > $LOG_DIR/$2.txt");
+		system("$BIN_DIR/fid_$2.pl $IP $1 $url_query > $DOC_DIR/$1.$2  &");
+		sleep 1;
+	    }
+	    
+	}
+	
+	if (-e "$root/$url"){ # existing
+	    $response->code( 500 );
+	    if (-f "$root/$url") { # file
+		if ("$url" =~ /\.mpg$/) { # large file
+		    $response->header(Content_Type => "video/mpeg");
+		    
+		    my $file = new IO::File "< $root/$url";		
+		    my ($cur_size, $full_size);
+   		    
+		    if (defined $file) {
+			binmode $file;
+			$response->code( 200 );
+			
+			$cur_size = -s $file;
+			
+			my $full_size = `grep -a Estimated-Length $LOG_DIR/curl.log | cut -d' ' -f3- `;
+			while (! $full_size =~ /[0-9]+/) {
+			    warn "premature grep $full_size\n";
+			    sleep 1;
+			    $full_size = `grep -a Estimated-Length $LOG_DIR/curl.log | cut -d ' ' -f3- `;
+			}
+			$full_size = $cur_size if ($full_size < $cur_size);
+			
+			my ($startrange, $endrange) = (0,$full_size-1);
+			if (defined $r->header("Range")
+			    and $r->header("Range") =~ /bytes\s*=\s*(\d+)-(\d+)?/) {
+			    ($startrange,$endrange) = ($1,$2 || $endrange);
+			    $response->header(Content_Range => "bytes $startrange-$endrange/$full_size");
+			    $response->code( 206 );
+			}
+			my $pos = $file->sysseek($startrange,0);
+			
+			my $tries = 0;
+			while ($pos != $startrange) {
+			    warn "failed seek $pos for $startrange";
+			    sleep 1;
+			    $pos = $file->sysseek($startrange,0);
+			}
+			$response->header(Content_Length => $endrange-$startrange+1);    
+			$response->content( 
+			    sub {
+				my $red = sysread($file, my ($buf), 16*1024); # No error checking ???
+				if (defined $red && $red < 16*1024) { #short
+				    sleep 1;
+				    $red += sysread($file, $buf, 16*1024-$red, $red); # No error checking ???
+				}
+				return $buf;
+			    });
+			
+		    }
+		} else { # small file
+		    my $contents;
+		    if (-x "$root/$url") { # executable
+			my $local_server = $r->headers->header('host');
+			#my $repeat_url_query = grep("Recurse", split(/\&\?/, $url_query));
+
+			my @params =() ;
+			if (defined $url_query) {
+			    @params = split("[\&]", $url_query);
+		   	    push(@params,"'Query=?$url_query'");
+			} else {
+		   	    push(@params,"'Query='");
+			}
+			push(@params,"'Referrer=" . $r->header('Referer') . "'");
+			push(@params,"'Server=$local_server'");
+			
+			my $cl = "$root/$url 'host=$IP' '$url_query' " . join(" ", @params);
+			warn "$cl\n";	
+			$contents = `$cl`;
+		    } else { # non-executable
+			$contents = `cat $root/$url`;
+		    }
+		    
+		    if (defined $contents) {
+			$response->content($contents);
+			$response->code( 200 );
+		    }
+		}
+	    } else { # not a file; directory?
+		$response->code( 307 );
+		$response->header( Location => '/index.html');
+	    }
+	}
+	
+	warn "Response : " . $response->code;
+	warn "Respose : " .  Dumper($response->headers());
+	$connection->send_response($response);
+    }
+    warn "Handled connection (closed, " . $connection->reason . ")";
+    $connection->close;
+}
+
+while (my $connection = $d->accept) {
+    # Really condensed fork/nofork handler code
+    next unless $nofork || ! fork();
+    warn "Forked child" unless $nofork;
+    handleConnection( $connection );
+    die "Child quit." unless $nofork;
+}
