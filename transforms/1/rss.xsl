@@ -23,10 +23,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 		  <xsl:value-of select="substring-after(current(),'id=')" />
 		</xsl:for-each>
 	      </xsl:variable>
-	      <link>
-		<a href="{$fid}.mpg"> Play
-		</a>
-	      </link>
+	      <link><xsl:value-of select="$fid" />.mpg</link>
 	    </item>
 	  </xsl:if>
 	</xsl:for-each>
