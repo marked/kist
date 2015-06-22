@@ -43,12 +43,15 @@ if (! $xsl) {
     }
   }
 }
+my @xslt1_params;
 for (my $a=0; $a < @ARGV; $a++) {
   $ARGV[$a] = "'$ARGV[$a]'";
+  $xslt1_params[$a] = "--stringparam $ARGV[$a]";
+  $xslt1_params[$a] =~ s/=/' '/;
 }
 
-my $transform1_cmd = "xsltproc $XSL_DIR/$xsl.xsl - " . join(' ', @ARGV);
-my $transform2_cmd = "saxonb-xslt -xsl:$XSL_DIR/$xsl.xsl -s:- " . join(' ', @ARGV);
+my $transform2_cmd = "saxonb-xslt -xsl:$XSL_DIR/2/$xsl.xsl -s:- " . join(' ', @ARGV);
+my $transform1_cmd = "xsltproc " . join(' ', @xslt1_params) . " $XSL_DIR/1/$xsl.xsl - ";
 
 my $url = "https://$IP$np_xml_path$params";
 
@@ -61,7 +64,7 @@ foreach my $f (`ls $BIN_DIR/post_filters`) {
 }
 
 if ($xsl) {
-  $post_cmd .= " | $transform2_cmd";
+  $post_cmd .= " | $transform1_cmd";
 }
 
 warn "$fetch_cmd '$url' $post_cmd\n";
