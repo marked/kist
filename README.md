@@ -9,7 +9,9 @@
 * tivodecode
 * curl
 * libxml2-utils: ( xmllint )
-* libsaxonb-java: ( saxonb-xslt )
+* xsltproc: ( xsltproc )
+* or
+libsaxonb-java: ( saxonb-xslt )
 
 [ /usr/bin/ or /usr/local/bin/ ]
 
