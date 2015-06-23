@@ -143,7 +143,7 @@ exclude-result-prefixes="ks xs"
 		  <xsl:value-of select="date:month-in-year($capture_date_s)" />/<xsl:value-of select="date:day-in-month($capture_date_s)" />/<xsl:value-of select="date:year($capture_date_s)" /><br />
 		 
 		  <xsl:variable name="capture_time_s" select="($capture_date_dec mod (60*60*24))" />
-		  <xsl:value-of select="floor($capture_time_s div 3600)" />:<xsl:value-of select="floor($capture_time_s mod 3600 div 60)" />:<xsl:value-of select="$capture_time_s mod 60" /><br />
+		  <xsl:value-of select="floor($capture_time_s div 3600)" />:<xsl:value-of select="format-number(floor($capture_time_s mod 3600 div 60),'00')" />:<xsl:value-of select="format-number($capture_time_s mod 60,'00')" /><br />
 		  [&#160;<xsl:value-of select="substring(Details/CaptureDate,3)" />&#160;]
 		</xsl:if>
 	      </td>
