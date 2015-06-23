@@ -6,6 +6,7 @@
 		xmlns:func="http://exslt.org/functions"
                 extension-element-prefixes="func date"
 xmlns:date="http://exslt.org/dates-and-times"
+exclude-result-prefixes="ks xs"
 		>
   
   
