@@ -92,7 +92,7 @@ xmlns:date="http://exslt.org/dates-and-times"
 	  </tr>
 	</table>
 	<table cellpadding="7" width="100%">
-	  <tr bgcolor="E5E5C5">
+	  <tr bgcolor="#E5E5C5">
 	    <th width="1%"></th>
 	    <th width="1%">Source</th>
 	    <th>Description</th>
@@ -103,8 +103,8 @@ xmlns:date="http://exslt.org/dates-and-times"
 	  <xsl:for-each select="TiVoContainer/Item">
 	    <xsl:variable name="row_color">
 	      <xsl:choose>
-		<xsl:when test="position() mod 2 = 1">F5F5B5</xsl:when>
-		<xsl:otherwise>F5F595</xsl:otherwise>
+		<xsl:when test="position() mod 2 = 1">#F5F5B5</xsl:when>
+		<xsl:otherwise>#F5F595</xsl:otherwise>
 	      </xsl:choose>
 	    </xsl:variable>
 	    <tr bgcolor="{$row_color}">
@@ -134,11 +134,15 @@ xmlns:date="http://exslt.org/dates-and-times"
 	      </td>
 	      <td>
 		<xsl:if test="Details/CaptureDate">
-		  <xsl:variable name="capture_date" select="date:add(date:date('1970-01-01'),concat('P',floor(((ks:hexDate2decDate(substring(Details/CaptureDate,3)) div 3600) + $TZ) div 24) ,'D'))" />
-		  <xsl:value-of select="date:day-abbreviation($capture_date)" /> <br />
-		  <xsl:value-of select="date:month-in-year($capture_date)" /> /
-		  <xsl:value-of select="date:day-in-month($capture_date)" /> /
-		  <xsl:value-of select="date:year($capture_date)" /> 
+		  <xsl:variable name="capture_date_dec" select="ks:hexDate2decDate(substring(Details/CaptureDate,3))" />
+		  
+		  <xsl:variable name="capture_date_s" select="date:add(date:date('1970-01-01'),concat('P',floor((($capture_date_dec div 3600) + 0) div 24) ,'D'))" />
+		  
+		  <xsl:value-of select="date:day-abbreviation($capture_date_s)" /><br />
+		  <xsl:value-of select="date:month-in-year($capture_date_s)" />/<xsl:value-of select="date:day-in-month($capture_date_s)" />/<xsl:value-of select="date:year($capture_date_s)" /><br />
+		 
+		  <xsl:variable name="capture_time_s" select="($capture_date_dec mod (60*60*24))" />
+		  <xsl:value-of select="floor($capture_time_s div 3600)" />:<xsl:value-of select="floor($capture_time_s mod 3600 div 60)" />:<xsl:value-of select="$capture_time_s mod 60" /><br />
 		  [&#160;<xsl:value-of select="substring(Details/CaptureDate,3)" />&#160;]
 		</xsl:if>
 	      </td>
