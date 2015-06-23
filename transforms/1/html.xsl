@@ -133,7 +133,7 @@ exclude-result-prefixes="ks xs"
 		</xsl:if>
 		<xsl:value-of select="Details/Description" />
 	      </td>
-	      <td>
+	      <td class="dateField">
 		<xsl:if test="Details/CaptureDate">
 		  <xsl:variable name="capture_date_dec" select="ks:hexDate2decDate(substring(Details/CaptureDate,3))" />
 		  
@@ -144,7 +144,7 @@ exclude-result-prefixes="ks xs"
 		 
 		  <xsl:variable name="capture_time_s" select="($capture_date_dec mod (60*60*24))" />
 		  <xsl:value-of select="floor($capture_time_s div 3600)" />:<xsl:value-of select="format-number(floor($capture_time_s mod 3600 div 60),'00')" />:<xsl:value-of select="format-number($capture_time_s mod 60,'00')" /><br />
-		  [&#160;<xsl:value-of select="substring(Details/CaptureDate,3)" />&#160;]
+		  [&#160;<span class="hexDate"><xsl:value-of select="substring(Details/CaptureDate,3)" /></span>&#160;]
 		</xsl:if>
 	      </td>
 	      <td>
