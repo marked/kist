@@ -9,7 +9,6 @@ xmlns:date="http://exslt.org/dates-and-times"
 exclude-result-prefixes="ks xs"
 		>
   
-  
   <xsl:param name="Container" select="'/NowPlaying'" />
   <xsl:param name="Recurse" select="'No'" />
   <xsl:param name="TZ" select="-5" />
@@ -83,8 +82,9 @@ exclude-result-prefixes="ks xs"
 	<link rel="stylesheet" href="html/style.css" type="text/css" media="all" />
 	<link rel="alternate" type="text/xml" title="RSS 2.0" href="/NowPlaying.rss" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script src="html/date.js" />
       </head>
-      <body>
+      <body onLoad="reDate()">
 	<img src="html/images/tivodance.gif" align="right" />
 	<table>
 	  <tr>
@@ -120,7 +120,8 @@ exclude-result-prefixes="ks xs"
 	      <td>
 		<xsl:if test="Details/SourceChannel">
 		  <xsl:variable name="channel_num" select="translate(Details/SourceChannel,'-','.')" />
-		  <img src="html/images/logos/{$channel_num}.png" /><br />
+		  <xsl:variable name="channel_id" select="Details/IdGuideSource" />
+		  <img src="html/images/logos/{$channel_id}.png" /><br />
 		  <xsl:value-of select="$channel_num" />&#160;<xsl:value-of select="Details/SourceStation" />
 		</xsl:if>
 	      </td>
@@ -139,10 +140,7 @@ exclude-result-prefixes="ks xs"
 		  
 		  <xsl:variable name="capture_date_s" select="date:add(date:date('1970-01-01'),concat('P',floor((($capture_date_dec div 3600) + 0) div 24) ,'D'))" />
 		  
-		  <xsl:value-of select="date:day-abbreviation($capture_date_s)" /><br />
-		  <xsl:value-of select="date:month-in-year($capture_date_s)" />/<xsl:value-of select="date:day-in-month($capture_date_s)" />/<xsl:value-of select="date:year($capture_date_s)" /><br />
-		 
-		  <xsl:variable name="capture_time_s" select="($capture_date_dec mod (60*60*24))" />
+		  <xsl:value-of select="date:day-abbreviation($capture_date_s)" />&#160;<xsl:value-of select="date:month-in-year($capture_date_s)" />/<xsl:value-of select="date:day-in-month($capture_date_s)" />/<xsl:value-of select="date:year($capture_date_s)" />&#160;<xsl:variable name="capture_time_s" select="($capture_date_dec mod (60*60*24))" />
 		  <xsl:value-of select="floor($capture_time_s div 3600)" />:<xsl:value-of select="format-number(floor($capture_time_s mod 3600 div 60),'00')" />:<xsl:value-of select="format-number($capture_time_s mod 60,'00')" /><br />
 		  [&#160;<span class="hexDate"><xsl:value-of select="substring(Details/CaptureDate,3)" /></span>&#160;]
 		</xsl:if>
