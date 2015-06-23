@@ -18,6 +18,8 @@ libsaxonb-java: ( saxonb-xslt )
 ####Tested Server:
 
 *  Ubuntu
+*  Mac 10.10
+*  FreeBSD
 
 ####Tested Clients:
 
@@ -49,7 +51,7 @@ libsaxonb-java: ( saxonb-xslt )
     $ bin/fid_mpg [host=192.168.1.100] 123456
     < mpeg TS of fileID follows >
 
-    $ bin/fid_xml [host=tivo] 123456
+    $ bin/fid_xml [host=tivo.mydomain] 123456
     < xml details of fileID follows >
 
     $ bin/dvr_xml 
@@ -58,7 +60,7 @@ libsaxonb-java: ( saxonb-xslt )
     $ bin/dvr_html
     < html index from default IP follows >
     
-    $ bin/dvr_html host=tivo Recurse=Yes
+    $ bin/dvr_html host=tivo.mydomain Recurse=Yes
     < html classic index from default IP follows >
  
 ####ToDo:
