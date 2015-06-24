@@ -65,7 +65,8 @@ sub handleConnection {
 	if (!(-e "$root/$url") && $url =~ /([0-9\-\.]+)\.([a-z]+)/) { # missing jit file
 	    $response->code( 500 );
 	    if ($2 eq "png") {
-		system("ln -s Blank.png $DOC_DIR/html/images/logos/$1.$2");
+		#system("ln -s Blank.png $DOC_DIR/html/images/logos/$1.$2");
+		#system("ln -s cid_png $DOC_DIR/html/images/logos/$1.$2");
 	    } else {
 		system("touch $DOC_DIR/$1.$2");
 		if (defined $url_query) {

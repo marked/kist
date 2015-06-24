@@ -76,7 +76,7 @@ exclude-result-prefixes="ks xs"
 		<xsl:if test="Details/SourceChannel">
 		  <xsl:variable name="channel_num" select="translate(Details/SourceChannel,'-','.')" />
 		  <xsl:variable name="channel_id" select="Details/IdGuideSource" />
-		  <img src="html/images/logos/{$channel_id}.png" /><br />
+		  <img src="https://zaplogos-986.appspot.com/station?id={$channel_id}&amp;width=40" /><br />
 		  <xsl:value-of select="$channel_num" />&#160;<xsl:value-of select="Details/SourceStation" />
 		</xsl:if>
 	      </td>
