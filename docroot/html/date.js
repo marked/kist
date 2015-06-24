@@ -3,7 +3,7 @@
     for (var i=0; i < dates.length; i++) {
       var hdnode =  dates[i];
       var hd = '0x' + hdnode.textContent;
-      var d = new Date(hd*1000 + 1000);
+      var d = new Date(hd*1000);
       hdnode.parentNode.innerHTML = hdnode.parentNode.innerHTML + formatDate(d);
     }
   }
