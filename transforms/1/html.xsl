@@ -21,53 +21,8 @@ exclude-result-prefixes="ks xs"
   <func:function name="ks:hexDate2decDate">
     <xsl:param name="hexString" />
     <xsl:choose>
-      <xsl:when test="$hexString = '0'">
-	<func:result select="0" />
-      </xsl:when>
-      <xsl:when test="$hexString = '1'">
-	<func:result select="1" />
-      </xsl:when>
-      <xsl:when test="$hexString = '2'">
-	<func:result select="2" />
-      </xsl:when>
-      <xsl:when test="$hexString = '3'">
-	<func:result select="3" />
-      </xsl:when>
-      <xsl:when test="$hexString = '4'">
-	<func:result select="4" />
-      </xsl:when>
-      <xsl:when test="$hexString = '5'">
-	<func:result select="5" />
-      </xsl:when>
-      <xsl:when test="$hexString = '6'">
-	<func:result select="6" />
-      </xsl:when>
-      <xsl:when test="$hexString = '7'">
-	<func:result select="7" />
-      </xsl:when>
-      <xsl:when test="$hexString = '8'">
-	<func:result select="8" />
-      </xsl:when>
-      <xsl:when test="$hexString = '9'">
-	<func:result select="9" />
-      </xsl:when>
-      <xsl:when test="$hexString = 'A'">
-	<func:result select="10" />
-      </xsl:when>
-      <xsl:when test="$hexString = 'B'">
-	<func:result select="11" />
-      </xsl:when>
-      <xsl:when test="$hexString = 'C'">
-	<func:result select="12" />
-      </xsl:when>
-      <xsl:when test="$hexString = 'D'">
-	<func:result select="13" />
-      </xsl:when>
-      <xsl:when test="$hexString = 'E'">
-	<func:result select="14" />
-      </xsl:when>
-      <xsl:when test="$hexString = 'F'">
-	<func:result select="15" />
+      <xsl:when test="string-length($hexString) = 1">
+	<func:result select="string-length(substring-before('0123456789ABCDEF', $hexString))" />
       </xsl:when>
       <xsl:otherwise>
 	<func:result select="16*ks:hexDate2decDate(substring($hexString,1,string-length($hexString)-1))+ks:hexDate2decDate(substring($hexString,string-length($hexString),1))" />
