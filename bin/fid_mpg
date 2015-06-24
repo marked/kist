@@ -37,7 +37,7 @@ if (@ARGV >= 1) {
 my $param_PS = "Format=video/x-tivo-mpeg";
 my $param_TS = "Format=video/x-tivo-mpeg-ts";
 
-my $fetch_cmd = "curl -u tivo:$MAK --digest -b'sid=$$' $offset_arg -v 'http://$IP$vid_path$fid&$param_PS' 2> $LOG_DIR/curl.log";
+my $fetch_cmd = "curl -u tivo:$MAK --digest -b'sid=abc' $offset_arg -v 'http://$IP$vid_path$fid&$param_PS' 2> $LOG_DIR/curl.log";
 my $decode_cmd = "";
 if (1) {
   $decode_cmd = "| tivodecode -m $MAK -o - - 2> $LOG_DIR/td.log";
