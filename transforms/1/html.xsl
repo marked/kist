@@ -37,9 +37,8 @@ exclude-result-prefixes="ks xs"
 	<link rel="stylesheet" href="html/style.css" type="text/css" media="all" />
 	<link rel="alternate" type="text/xml" title="RSS 2.0" href="/NowPlaying.rss" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<script src="html/date.js" />
       </head>
-      <body onLoad="reDate()">
+      <body>
 	<img src="html/images/tivodance.gif" align="right" />
 	<table>
 	  <tr>
@@ -162,6 +161,7 @@ exclude-result-prefixes="ks xs"
 	<p />
 	<font size="-2">This feature is not supported. The TiVo license agreement allows you to transfer content to up to ten devices within your household, but not outside your household.  Unauthorized transfers or distribution of copyrighted works outside of your home may constitute a copyright infringement. TiVo reserves the right to terminate the TiVo service accounts of users who transfer or distribute content in violation of this Agreement. </font>
       </body>
+      <script src="html/date.js" />
     </html>
   </xsl:template>
 </xsl:stylesheet>

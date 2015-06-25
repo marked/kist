@@ -1,4 +1,3 @@
-  function reDate() {
     var dates = document.getElementsByClassName('hexDate');
     for (var i=0; i < dates.length; i++) {
       var hdnode =  dates[i];
@@ -6,7 +5,6 @@
       var d = new Date(hd*1000);
       hdnode.parentNode.innerHTML = hdnode.parentNode.innerHTML + formatDate(d);
     }
-  }
 
   function formatDate(d) {
     var dow = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()];
