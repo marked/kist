@@ -11,6 +11,7 @@ if (defined $MAK && $MAK =~ /^([0-9]+)$/) {
 } else {
   die "Invalid MAK\nDefine \$TIVO_MAK or edit Conf.pm\n";
 }
+our $SID = "kist";
 
 our $ROOT = $INC[0] . "/..";
 our $DOC_DIR = "$ROOT/docroot";
@@ -21,6 +22,7 @@ our $XSL_DIR = "$ROOT/transforms";
 our @EXPORT = qw(
   $IP
   $MAK
+  $SID
   $ROOT
   $DOC_DIR
   $BIN_DIR

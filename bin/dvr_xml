@@ -55,7 +55,7 @@ my $transform1_cmd = "xsltproc " . join(' ', @xslt1_params) . " $XSL_DIR/1/$xsl.
 
 my $url = "https://$IP$np_xml_path$params";
 
-my $fetch_cmd = "curl -s -u \"tivo:$MAK\" -b'sid=abc' -k --digest ";
+my $fetch_cmd = "curl -s -u \"tivo:$MAK\" -b'sid=$SID' -k --digest ";
 my $post_cmd = '';
 
 foreach my $f (`ls $BIN_DIR/post_filters`) {
