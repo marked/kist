@@ -9,13 +9,13 @@
 * tivodecode
 * curl
 * libxml2-utils: ( xmllint )
-* xsltproc: ( xsltproc )
-* or
+* XSLT via:
+xsltproc: ( xsltproc ) or 
 libsaxonb-java: ( saxonb-xslt )
 
 [ /usr/bin/ or /usr/local/bin/ ]
 
-####Tested Server:
+####Tested Servers:
 
 *  Ubuntu
 *  Mac 10.10
@@ -66,11 +66,11 @@ libsaxonb-java: ( saxonb-xslt )
 ####ToDo:
 
 * multi DVR households
-* support PATH
+* support $PATH
 * render Details page
-* Channel logo grabber
+* local Channel logo override/grabber
 * WAN access + Auth
-* Enlarge cache
+* Enlarge cache management
 * Verify sane inputs
 * Redesign HTML UI
 
