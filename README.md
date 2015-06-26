@@ -38,14 +38,8 @@ libsaxonb-java: ( saxonb-xslt )
 2. Start daemon: `bin/kistd`
 3. Contact server from web browser, on port 8080
 
-#####Logos can be added to docroot/html/images/logos/ with the filenames:
+#####Channel logos come from a backend service.  If yours are missing, message the author with your lineup URL from zap2it.com
 
-    1.png
-    2.png
-    3.png
-    ...
-    999.png
-    
 ####CLI Usage:
 
     $ bin/fid_mpg [host=192.168.1.100] 123456
