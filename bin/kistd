@@ -36,7 +36,7 @@ $SIG{CHLD} = 'IGNORE';
 warn "Please contact me at: <URL:" . $d->url . ">\n";
 
 $ENV{PATH} = '/bin:/usr/bin:/usr/local/bin'; # Set our path to something secure
-my $root = $DOC_DIR;
+my $root;
 #$root = $1 if $root =~ /^(.*)$/; # untaint document root
 #$root .= "/" unless $root =~ m!/$!;
 
@@ -62,30 +62,34 @@ sub handleConnection {
        	
 	my $response = new HTTP::Response( 404,undef,undef,"404 - Not found." );
 
-	if (!(-e "$root/$url") && $url =~ /([0-9\-\.]+)\.([a-z]+)/) { # missing jit file
-	    $response->code( 500 );
-	    if ($2 eq "png") {
-		#system("ln -s Blank.png $DOC_DIR/html/images/logos/$1.$2");
-		#system("ln -s cid_png $DOC_DIR/html/images/logos/$1.$2");
-	    } else {
-		system("touch $DOC_DIR/$1.$2");
-		if (defined $url_query) {
-		    $url_query =~ tr/[0-9]//cd;
+	if ($url =~ /([0-9\-\.]+)\.([a-z]+)/) { # jit file
+	    $root = $TMP_DIR;
+	    if (!(-e "$root/$url")) { # missing
+		$response->code( 500 );
+		if ($2 eq "png") {
+		    #system("ln -s Blank.png $DOC_DIR/html/images/logos/$1.$2");
+		    #system("ln -s cid_png $DOC_DIR/html/images/logos/$1.$2");
 		} else {
-		    $url_query = "";
+		    system("touch $root/$1.$2");
+		    if (defined $url_query) {
+			$url_query =~ tr/[0-9]//cd;
+		    } else {
+			$url_query = "";
+		    }
+		    
+		    warn "kill+rm\n";
+		    system("killall curl");
+		    system("rm $root/`cat $LOG_DIR/$2.txt`.$2");
+		    system("echo $1 > $LOG_DIR/$2.txt");
+		    system("$BIN_DIR/fid_$2 $IP $1 $url_query > $root/$1.$2  &");
+		    sleep 1;
 		}
-		
-		warn "kill+rm\n";
-		system("killall curl");
-		system("rm $DOC_DIR/`cat $LOG_DIR/$2.txt`.$2");
-		system("echo $1 > $LOG_DIR/$2.txt");
-		system("$BIN_DIR/fid_$2 $IP $1 $url_query > $DOC_DIR/$1.$2  &");
-		sleep 1;
-	    }
-	    
+	    }   
+	} else { # static file
+	    $root = $DOC_DIR;
 	}
 	
-	if (-e "$root/$url"){ # existing
+	if (-e "$root/$url") { # existing
 	    $response->code( 500 );
 	    if (-f "$root/$url") { # file
 		if ("$url" =~ /\.mpg$/) { # large file
@@ -126,10 +130,10 @@ sub handleConnection {
 			$response->header(Content_Length => $endrange-$startrange+1);    
 			$response->content( 
 			    sub {
-				my $red = sysread($file, my ($buf), 16*1024); # No error checking ???
+				my $red = sysread($file, my ($buf), 16*1024); # No error checking ?
 				if (defined $red && $red < 16*1024) { #short
 				    sleep 1;
-				    $red += sysread($file, $buf, 16*1024-$red, $red); # No error checking ???
+				    $red += sysread($file, $buf, 16*1024-$red, $red); # No error checking ?
 				}
 				return $buf;
 			    });

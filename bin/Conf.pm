@@ -18,6 +18,7 @@ our $DOC_DIR = "$ROOT/docroot";
 our $BIN_DIR = "$ROOT/bin";
 our $LOG_DIR = "$ROOT/log";
 our $XSL_DIR = "$ROOT/transforms";
+our $TMP_DIR = "$ROOT/tmp";
 
 our @EXPORT = qw(
   $IP
@@ -28,5 +29,6 @@ our @EXPORT = qw(
   $BIN_DIR
   $LOG_DIR
   $XSL_DIR
+  $TMP_DIR
 );
 
