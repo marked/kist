@@ -1,1 +1,8 @@
-xmllint --format -
+#!/bin/bash
+which xmllint > /dev/null
+if [ $? -eq 0 ]
+then
+  xmllint --format -
+else
+  cat
+fi
