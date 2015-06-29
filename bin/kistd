@@ -148,7 +148,7 @@ sub handleConnection {
 			my @params =() ;
 			if (defined $url_query) {
 			    @params = split("[\&]", $url_query);
-		   	    push(@params,"'Query=$url_query'");
+		   	    push(@params,"'Query=?$url_query'");
 			} else {
 		   	    push(@params,"'Query='");
 			}
