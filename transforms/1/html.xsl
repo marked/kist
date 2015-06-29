@@ -43,7 +43,7 @@ exclude-result-prefixes="ks xs"
 	<table>
 	  <tr>
 	    <td><h1>Now Playing</h1></td>
-	    <td><a href="NowPlaying.m3u{$Query}">.m3u</a> | <a href="NowPlaying.rss{$Query}">.rss</a> | <a href="NowPlaying.xml{$Query}">.xml</a></td>
+	    <td><a href="NowPlaying.m3u?{$Query}">.m3u</a> | <a href="NowPlaying.rss?{$Query}">.rss</a> | <a href="NowPlaying.xml?{$Query}">.xml</a></td>
 	  </tr>
 	</table>
 	<table cellpadding="7" width="100%">
