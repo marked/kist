@@ -18,7 +18,7 @@ use Common;
 use Conf;
 
 my $fid = "";
-my $offset_arg = "";
+my $offset_arg;
 
 my $nums = 0;
 my $other = 0;
@@ -43,7 +43,7 @@ if ( !($nums >0 && $nums <= 2 && $other <= 1)  ) {
 my $param_PS = "Format=video/x-tivo-mpeg";
 my $param_TS = "Format=video/x-tivo-mpeg-ts";
 
-if ($offset_arg) {
+if (defined $offset_arg) {
   $offset_arg = " -C $offset_arg ";
 }
 
