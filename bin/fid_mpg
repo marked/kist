@@ -4,38 +4,48 @@ use strict;
 
 my $ROOT;
 BEGIN {
-  $0 =~ m%^(.*)/%;
-  $ROOT = $1;
+  my (@dirs) = split "/", $0 ;
+  pop(@dirs);
+  if (readlink($0)) {
+    push(@dirs,split "/", readlink($0)) ;
+    pop(@dirs);
+  }
+  $ROOT = join( "/", @dirs);
 }
 use lib $ROOT;
 
 use Common;
 use Conf;
 
-if (@ARGV < 2) {
-  die "Usage: $0 <HostDVR> <fileID> [offset]\n";
-}
-
-my $IP = "";
-if (@ARGV >= 1) {
-  $IP = shift(@ARGV);
-}
-
 my $fid = "";
-if (@ARGV >= 1 ) {
-  $fid = shift(@ARGV);
-  $fid =~ tr/[0-9]//cd;
-} 
-
 my $offset_arg = "";
-if (@ARGV >= 1) {
-  $offset_arg = shift(@ARGV);
-  $offset_arg =~ tr/[0-9]//cd;
-  $offset_arg = "-C $offset_arg";
+
+my $nums = 0;
+my $other = 0;
+foreach my $a (@ARGV) {
+  if ($a =~ m/^[0-9]+$/) {
+    $nums++;
+    if ($nums == 1) {
+      $fid = $a;
+    } else {
+      $offset_arg = $a;
+    }
+  } else {
+    $other++;
+    $IP = $a;
+  }
+}
+
+if ( !($nums >0 && $nums <= 2 && $other <= 1)  ) {
+  die "Usage: $0 [HostDVR] <fileID> [offset]\n";
 }
 
 my $param_PS = "Format=video/x-tivo-mpeg";
 my $param_TS = "Format=video/x-tivo-mpeg-ts";
+
+if ($offset_arg) {
+  $offset_arg = " -C $offset_arg ";
+}
 
 my $fetch_cmd = "curl -u tivo:$MAK --digest -b'sid=$SID' $offset_arg -v 'http://$IP$vid_path$fid&$param_PS' 2> $LOG_DIR/curl.log";
 my $decode_cmd = "";

@@ -4,8 +4,13 @@ use strict;
 
 my $ROOT;
 BEGIN {
-  $0 =~ m%^(.*)/%;
-  $ROOT = $1;
+  my (@dirs) = split "/", $0 ;
+  pop(@dirs);
+  if (readlink($0)) {
+    push(@dirs,split "/", readlink($0)) ;
+    pop(@dirs);
+  }
+  $ROOT = join( "/", @dirs);
 }
 use lib $ROOT;
 
@@ -13,16 +18,21 @@ use Common;
 use Conf;
 
 my $fid = "";
-if (@ARGV == 2) {
-  $fid = pop(@ARGV);
-  $fid =~ tr/[0-9]//cd;
-} else {
-  die "Usage: $0 <HostDVR> <fileID>\n";
+
+my $nums = 0;
+my $other = 0;
+foreach my $a (@ARGV) {
+  if ($a =~ m/^[0-9]+$/) {
+    $nums++;
+    $fid = $a;
+  } else {
+    $other++;
+    $IP = $a;
+  }
 }
 
-my $IP = "";
-if (@ARGV == 1) {
-  $IP = shift(@ARGV);
+if ( !($nums >0 && $nums <= 1 && $other <= 1)  ) {
+  die "Usage: $0 [HostDVR] <fileID> \n";
 }
 
 my $fetch_cmd = "curl -u tivo:$MAK -k --digest -b'sid=$SID' 'https://$IP$detail_xml_path$fid'";

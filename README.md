@@ -1,5 +1,5 @@
 # kist
-##Keep-It-Simple-Tv
+##Keep-It-Simple-Tivo
 
 ###Custom HTTP proxy server for TivoToGo
 
@@ -8,10 +8,13 @@
 * perl
 * tivodecode
 * curl
-* libxml2-utils: ( xmllint )
 * XSLT via:
 xsltproc: ( xsltproc ) or 
 libsaxonb-java: ( saxonb-xslt )
+
+####Optional:
+
+* libxml2-utils: ( xmllint )
 
 [ /usr/bin/ or /usr/local/bin/ ]
 
@@ -42,23 +45,23 @@ libsaxonb-java: ( saxonb-xslt )
 
 ####CLI Usage:
 
-    $ bin/fid_mpg [host=192.168.1.100] 123456
+    $ bin/fid_mpg [192.168.1.100] 123456
     < mpeg TS of fileID follows >
 
-    $ bin/fid_xml [host=tivo.mydomain] 123456
+    $ bin/fid_xml [tivo.mydomain] 123456
     < xml details of fileID follows >
 
-    $ bin/dvr_xml 
+    $ bin/dvr_xml
     < xml index from default IP follows >
 
-    $ bin/dvr_html
-    < html index from default IP follows >
+    $ bin/dvr_html [192.168.1.100]
+    < html index from specific IP follows >
     
-    $ bin/dvr_html host=tivo.mydomain Recurse=Yes
-    < html classic index from default IP follows >
+    $ bin/dvr_html [tivo.mydomain] Recurse=Yes&AnchorOffset=16
+    < html classic index from specific IP follows >
  
 ####ToDo:
-
+* multiple user sessions
 * multi DVR households
 * support $PATH
 * render Details page

@@ -17,45 +17,51 @@ use lib $ROOT;
 use Common;
 use Conf;
 
-my $pIP = "";
-if (@ARGV > 0) {
-  $pIP = shift(@ARGV);
-  $pIP =~ s/host=//i;
-  $IP = $pIP;
-} else {
-  # 0 arguments requred.  host optionally comes from Conf.pm
-  # die "Usage: $0 [Host=DvrIP] [Query=val] [RenderKey=val]\n";
+my $pP = "";
+my $params = "";
+
+if (@ARGV >= 1) {
+  $pP = shift(@ARGV);
+
+  if ($pP =~ m/=/) {
+      $params .= '&' . $pP;
+  } else {
+      $IP = $pP;
+      if (@ARGV >= 1) {
+	  $pP = shift(@ARGV);
+	  
+	  if ($pP =~ m/=/) {
+	      $params .= '&' . $pP;
+	  }
+       }
+   }
 }
 
-my $params = "";
-if (@ARGV > 0) {
-  $params .= '&' .  shift(@ARGV);
-}
 if ($params !~ 'Container=') {
-  $params .= '&' . $param_np;
+    $params .= '&' . $param_np;
 }
 
 my $xsl = "";
-if (! $xsl) {
-  if ($0 =~ /[a-zA-Z_]+[\._]([a-zA-Z0-9]+)$/) {
-    if ($1 !~ /xml/) {
-      $xsl = $1;
-    }
-  }
-}
 my @xslt1_params;
-for (my $a=0; $a < @ARGV; $a++) {
-  $ARGV[$a] = "'$ARGV[$a]'";
-  $xslt1_params[$a] = "--stringparam $ARGV[$a]";
-  $xslt1_params[$a] =~ s/=/' '/;
+my @xslt2_params;
+
+if ($0 =~ /[a-zA-Z_]+[\._]([a-zA-Z0-9]+)$/ && $1 !~ /xml/) {
+    $xsl = $1;
+    
+    for (my $a=0; $a < @ARGV; $a++) {
+	$ARGV[$a] = "'$ARGV[$a]'";
+	$xslt1_params[$a] = "--stringparam $ARGV[$a]";
+	$xslt1_params[$a] =~ s/=/' '/;
+	$xslt2_params[$a] = $ARGV[$a];
+    }
 }
 
-my $transform2_cmd = "saxonb-xslt -xsl:$XSL_DIR/2/$xsl.xsl -s:- " . join(' ', @ARGV);
-my $transform1_cmd = "xsltproc " . join(' ', @xslt1_params) . " $XSL_DIR/1/$xsl.xsl - ";
 
-my $url = "https://$IP$np_xml_path$params";
+my $transform1_cmd = "xsltproc " . join(' ', @xslt1_params) . " $XSL_DIR/1/$xsl.xsl - ";
+my $transform2_cmd = "saxonb-xslt -xsl:$XSL_DIR/2/$xsl.xsl -s:- " . join(' ', @xslt2_params);
 
 my $fetch_cmd = "curl -s -u \"tivo:$MAK\" -b'sid=$SID' -k --digest ";
+my $url = "https://$IP$np_xml_path$params";
 my $post_cmd = '';
 
 foreach my $f (`ls $BIN_DIR/post_filters`) {
@@ -67,10 +73,9 @@ if ($xsl) {
   $post_cmd .= " | $transform1_cmd";
 }
 
-warn "$fetch_cmd '$url' $post_cmd\n";
+if (defined($DEBUG) && $DEBUG) {
+  warn "$fetch_cmd '$url' $post_cmd\n";
+}
+
 my $xml = `$fetch_cmd '$url' $post_cmd`;
 print $xml;
-
-if (0) {
-  print "$fetch_cmd '$url' $post_cmd";
-}
