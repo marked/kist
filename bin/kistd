@@ -148,14 +148,15 @@ sub handleConnection {
 			my @params =() ;
 			if (defined $url_query) {
 			    @params = split("[\&]", $url_query);
-		   	    push(@params,"'Query=?$url_query'");
+		   	    push(@params,"'Query=$url_query'");
 			} else {
 		   	    push(@params,"'Query='");
 			}
-			push(@params,"'Referrer=" . $r->header('Referer') . "'");
-			push(@params,"'Server=$local_server'");
+			push(@params, "'Referrer=" . $r->header('Referer') . "'");
+			push(@params, "'Server=$local_server'");
+			push(@params, "'Host=$IP'");
 			
-			my $cl = "$root/$url 'host=$IP' '$url_query' " . join(" ", @params);
+			my $cl = "$root/$url $IP '$url_query' " . join(" ", @params);
 			warn "$cl\n";	
 			$contents = `$cl`;
 		    } else { # non-executable
