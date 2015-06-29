@@ -36,7 +36,12 @@ if ( !($nums >0 && $nums <= 1 && $other <= 1)  ) {
 }
 
 my $fetch_cmd = "curl -u tivo:$MAK -k --digest -b'sid=$SID' 'https://$IP$detail_xml_path$fid'";
-my $post_cmd = "$BIN_DIR/post_filters/pretty";
+my $post_cmd = '';
 
-my $xml = `$fetch_cmd  | $post_cmd`;
+foreach my $f (`ls $BIN_DIR/post_filters`) {
+  chomp $f;
+  $post_cmd .= " | $BIN_DIR/post_filters/$f";
+}
+
+my $xml = `$fetch_cmd  $post_cmd`;
 print $xml;
