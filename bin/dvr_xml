@@ -70,11 +70,18 @@ foreach my $f (`ls $BIN_DIR/post_filters`) {
 }
 
 if ($xsl) {
-  $post_cmd .= " | $transform1_cmd";
+    system("which saxonb-xslt > /dev/null");
+    if ($? == 0 && -e "$XSL_DIR/2/$xsl.xsl") {
+	$post_cmd .= " | $transform2_cmd";
+    }
+  
+    system("which xsltproc > /dev/null");
+    if ($? == 0 && -e "$XSL_DIR/1/$xsl.xsl") {
+	$post_cmd .= " | $transform1_cmd";
+    }
 }
-
 if (defined($DEBUG) && $DEBUG) {
-  warn "$fetch_cmd '$url' $post_cmd\n";
+    warn "$fetch_cmd '$url' $post_cmd\n";
 }
 
 my $xml = `$fetch_cmd '$url' $post_cmd`;
