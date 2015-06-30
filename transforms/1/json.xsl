@@ -142,7 +142,7 @@
       </xsl:otherwise>
     </xsl:choose>
     <xsl:if test="following-sibling::Item">,</xsl:if>
-    <xsl:if test="not(following-sibling::Item)">]</xsl:if>
+    <xsl:if test="not(following-sibling::Item)">]}</xsl:if>
   </xsl:template>
   
 <!-- object -->
@@ -170,6 +170,5 @@
   <!-- convert root element to an anonymous container -->
   <xsl:template match="/">
     <xsl:apply-templates select="node()"/>
-<xsl:text>}</xsl:text>    
   </xsl:template>
 </xsl:stylesheet>
