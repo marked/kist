@@ -70,14 +70,14 @@ foreach my $f (`ls $BIN_DIR/post_filters`) {
 }
 
 if ($xsl) {
-    system("which saxonb-xslt > /dev/null");
-    if ($? == 0 && -e "$XSL_DIR/2/$xsl.xsl") {
-	$post_cmd .= " | $transform2_cmd";
-    }
-  
     system("which xsltproc > /dev/null");
     if ($? == 0 && -e "$XSL_DIR/1/$xsl.xsl") {
 	$post_cmd .= " | $transform1_cmd";
+    } else {
+	system("which saxonb-xslt > /dev/null");
+	if ($? == 0 && -e "$XSL_DIR/2/$xsl.xsl") {
+	    $post_cmd .= " | $transform2_cmd";
+	}
     }
 }
 if (defined($DEBUG) && $DEBUG) {
